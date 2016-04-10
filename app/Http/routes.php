@@ -11,14 +11,15 @@
 |
 */
 
-Route::group(['middleware' => 'web'], function () {
+Route::group(['middlewareGroups' => ['web']], function () {
     Route::auth();
 
-    Route::get('/', function () {
-        return view('index');
-    });
+    Route::get('/', 'IndexController@index');
 
-    Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
-      Route::get('/', 'Admin\DashboardController@index');
+    Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function () {
+      // Dashboard routes
+      Route::get('/', 'DashboardController@index');
+      Route::post('/dashboard/settings', 'DashboardController@saveSettings');
+      Route::post('/dashboard/post/draft', 'DashboardController@savePostAsDraft');
     });
 });

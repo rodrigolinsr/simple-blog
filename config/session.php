@@ -109,7 +109,7 @@ return [
     |
     */
 
-    'cookie' => 'laravel_session',
+    'cookie' => 'laravel_simple_blog_session',
 
     /*
     |--------------------------------------------------------------------------

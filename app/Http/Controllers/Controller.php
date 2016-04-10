@@ -8,7 +8,19 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 
-class Controller extends BaseController
-{
+use Illuminate\Contracts\Validation\Validator;
+
+class Controller extends BaseController {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
+
+    protected function redirectBackIfValidatorFails(Validator $validator) {
+      if ($validator->fails()) {
+        return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+      }
+
+      return null;
+    }
 }

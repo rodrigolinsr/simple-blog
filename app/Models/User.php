@@ -10,7 +10,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 class User extends Eloquent implements \Illuminate\Contracts\Auth\Authenticatable,
                                        \Illuminate\Contracts\Auth\CanResetPassword
 {
-    use Authenticatable, CanResetPassword;
+    use Authenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -33,5 +33,9 @@ class User extends Eloquent implements \Illuminate\Contracts\Auth\Authenticatabl
     public function getEmailForPasswordReset()
     {
         return $this->email;
+    }
+
+    public function author() {
+      return $this->hasMany(Post::class);
     }
 }

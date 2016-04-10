@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Simple Blog | A very, very, very small blog system.</title>
+    <title>{{ $generalBlogTitle }} | {{ $generalBlogDescription }}</title>
 
     <!-- Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel='stylesheet' type='text/css'>
@@ -14,6 +14,9 @@
     <!-- Styles -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/blog.css" rel="stylesheet">
+    @if(Request::segment(1) === "admin")
+      <link href="/css/admin.css" rel="stylesheet">
+    @endif
 
     <style>
         body {
@@ -40,12 +43,26 @@
 
                 <!-- Branding Image -->
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Simple Blog
+                    {{ $generalBlogTitle }}
                 </a>
-                <sub class="text-muted sub-title">A very, very, very small blog system.</sub>
+                @if(Request::segment(1) !== "admin")
+                  <sub class="text-muted sub-title">{{ $generalBlogDescription }}</sub>
+                @endif
+
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
+              @if(Request::segment(1) === "admin")
+                <!-- Left Side Of Navbar -->
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ action('Admin\DashboardController@index') }}">Dashboard</a></li>
+                    <li><a href="{{ url('/admin/posts') }}">Posts</a></li>
+                    <li><a href="{{ url('/admin/comments') }}">Comments</a></li>
+                    <li><a href="{{ url('/admin/categories') }}">Categories</a></li>
+                    <li><a href="{{ url('/admin/tags') }}">Tags</a></li>
+                </ul>
+              @endif
+
               <!-- Right Side Of Navbar -->
               <ul class="nav navbar-nav navbar-right">
                 <!-- Link to the Admin panel -->
@@ -57,8 +74,9 @@
                       {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                      @if(substr(Request::path(), 0, 5) === "admin")
+                      @if(Request::segment(1) === "admin")
                         <li><a href="{{ url('/') }}"><i class="fa fa-btn fa-file-text-o"></i>Blog page</a></li>
+                        <li><a href="{{ url('/admin/profile') }}"><i class="fa fa-btn fa-user"></i>Profile</a></li>
                       @else
                         <li><a href="{{ url('/admin') }}"><i class="fa fa-btn fa-tachometer"></i>Admin Panel</a></li>
                       @endif
@@ -71,7 +89,24 @@
         </div>
     </nav>
 
-    @yield('content')
+    <div class="container">
+      <!-- Flash Messages -->
+      @if(session('flashMessages'))
+        <div class="row">
+          <div class="col-md-12">
+            @foreach(session('flashMessages') as $message)
+            <div class="alert alert-{{ $message['type'] }} alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert"
+              aria-hidden="true" style="font-size: 12px; margin-top: 7px;">&#10005;</button>
+              {!! $message['text'] !!}
+            </div>
+            @endforeach
+          </div>
+        </div>
+      @endif
+
+      @yield('content')
+    </div>
 
     <footer class="footer">
       <div class="container">

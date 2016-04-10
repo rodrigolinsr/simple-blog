@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\MyLib\BlogSettings;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      $blogSettingsIni = BlogSettings::getSettings();
+      view()->share('generalBlogTitle', $blogSettingsIni['blog_title']);
+      view()->share('generalBlogDescription', $blogSettingsIni['blog_description']);
     }
 
     /**
