@@ -11,6 +11,12 @@ class IniHandler {
     return self::writeToIniFile($fileLocation, $settings);
   }
 
+  /*
+   * These 2 following methods were extracted (and changed the syntax and identation by me)
+   * from the web and the original is available at the following link:
+   *
+   * http://php.net/manual/pt_BR/function.parse-ini-file.php#94414
+   */
   private static function writeToIniFile(string $fileLocation, array $settings) : bool {
     $res = [];
     foreach($settings as $key => $val) {
