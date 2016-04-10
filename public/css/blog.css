@@ -1,3 +1,18 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 40px;
+}
+
+.sub-title {
+  line-height: 50px;
+  font-size: 13px;
+}
+
 .row-blog-welcome {
   margin-bottom: 15px;
   padding-bottom: 15px;
@@ -10,6 +25,7 @@
 
 .posts-column {
   border-right: 1px dotted #e0e0e0;
+  margin-bottom: 15px;
 }
 
 .posts-column header {
@@ -76,11 +92,13 @@
 .tag-cloud ul li a.tag-rank-10 { font-size: 2.4em; font-weight: 900; }
 
 .footer {
-  margin-top: 30px;
+  position: absolute;
+  bottom: 0;
   width: 100%;
   background-color: #f8f8f8;
   border-top: 1px solid #e7e7e7;
   line-height: 40px;
+  height: 40px;
 }
 
 .footer a {

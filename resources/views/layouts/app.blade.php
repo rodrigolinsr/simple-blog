@@ -42,12 +42,13 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     Simple Blog
                 </a>
+                <sub class="text-muted sub-title">A very, very, very small blog system.</sub>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/home') }}">Home</a></li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url('/login') }}">Admin</a></li>
                 </ul>
             </div>
         </div>
@@ -58,7 +59,7 @@
     <footer class="footer">
       <div class="container">
         <span class="text-muted">Copyright &copy; 2016 <a href="rodrigolinsr@gmail.com">Rodrigo Lins</a> |
-        Developed specially for <a href="http://figured.com/">Figured</a>.</span>
+        Developed specially for <a href="http://figured.com/" target="_blank">Figured</a>.</span>
       </div>
     </footer>
 
