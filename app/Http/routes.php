@@ -19,6 +19,6 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
-      Route::get('/', 'HomeController@index');
+      Route::get('/', 'Admin\DashboardController@index');
     });
 });
