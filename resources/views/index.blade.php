@@ -25,7 +25,7 @@
             <h2 class="entry-title"><a href="#" title="{{ $post->title }}">{{ $post->title }}</a></h2>
             <div class="entry-meta">
               <span class="posted-on">Published on
-                <span class="entry-date text-danger">{{ date('F d, Y', strtotime($post->updated_at)) }}</span>
+                <span class="entry-date text-danger">{{ date('F d, Y \a\t H:i', strtotime($post->updated_at)) }}</span>
               </span>
               <span class="by-line"> by
                 <span class="author"><a href="#">{{ $post->author->name }}</a></span>

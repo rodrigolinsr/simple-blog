@@ -16,11 +16,10 @@ class IndexController extends Controller
 
       /*
        * TODO:
-       * 1) Filter by non-draft
-       * 2) Order by updated_at
-       * 3) Rank tags
+       * 1) Rank tags
+       * Nice to have: published_at
        */
-      $posts = Post::all();
+      $posts = Post::where('draft', '=', false)->orderBy('updated_at', 'desc')->get();
       $categories = Category::all();
       $tags = Tag::all();
 
