@@ -8,14 +8,12 @@ tinymce.init({
             ]
 });
 </script>
-<form role="form" method="{{ $formMethod }}" action="{{ $formAction }}">
-  {!! csrf_field() !!}
-
+{{ $formTag }}
   <div class="row">
     <div class="col-md-9">
       <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
         <input type="text" class="form-control" name="title" id="title"
-          value="{{ old('title') }}">
+          value="{{ old('title', $post->title ?? "") }}">
           @if ($errors->has('title'))
             <span class="help-block">
               <strong>{{ $errors->first('title') }}</strong>
@@ -23,7 +21,7 @@ tinymce.init({
           @endif
       </div>
       <div class="form-group{{ $errors->has('text') ? ' has-error' : '' }}">
-        <textarea class="form-control" rows="15" name="text" id="text">{!! old('text') !!}</textarea>
+        <textarea class="form-control" rows="15" name="text" id="text">{!! old('text', $post->text ?? "") !!}</textarea>
         @if ($errors->has('text'))
           <span class="help-block">
             <strong>{{ $errors->first('text') }}</strong>
@@ -40,21 +38,30 @@ tinymce.init({
               <table class="table table-striped no-margin">
                 <tr>
                   <td><strong>Status</strong></td>
-                  <td>Draft</td>
+                  <td>
+                    @if(isset($post))
+                      {!! $post->draft ? '<i class="fa fa-eye-slash"></i> Draft' : '<i class="fa fa-check-square-o"></i> Published' !!}
+                    @else
+                      <i class="fa fa-ban"></i> Unpublished
+                    @endif
+                  </td>
                 </tr>
                 <tr>
-                  <td><strong>Published</strong></td>
-                  <td>{{date('Y-m-d H:i:s')}}</td>
+                  <td><strong>Created</strong></td>
+                  <td>{{ $post->created_at ?? "-" }}</td>
                 </tr>
                 <tr>
                   <td><strong>Last Modified</strong></td>
-                  <td>{{date('Y-m-d H:i:s')}}</td>
+                  <td>{{ $post->updated_at ?? "-" }}</td>
                 </tr>
               </table>
             </div>
             <div class="panel-footer">
-              <button class="btn btn-default">Save as draft</button>
-              <button class="btn btn-primary pull-right">Publish</button>
+              <button class="btn btn-default" type="submit" name="btn_draft" value="1">
+                Save as draft</button>
+              <button class="btn btn-primary pull-right" type="submit" name="btn_publish" value="1">
+                {{ (!isset($post) || $post->draft) ? "Publish" : "Update" }}
+              </button>
             </div>
           </div>
         </div>
@@ -66,14 +73,15 @@ tinymce.init({
             <div class="panel-heading">Categories</div>
             <div class="panel-body no-padding">
               <ul>
-                @for($i = 1; $i <= 7; $i++)
+                @foreach($categories as $category)
                 <li><div class="checkbox">
                     <label>
-                      <input type="checkbox" name="categories[]" value="{{ $i }}">
-                      Category {{ $i }}
+                      <input type="checkbox" {{ isset($post->category_ids) && in_array($category->_id, $post->category_ids) ? 'checked="checked"' : "" }}
+                       name="categories[]" value="{{ $category->_id }}">
+                      {{ $category->name }}
                     </label>
                   </div></li>
-                @endfor
+                @endforeach
               </ul>
             </div>
           </div>
@@ -86,14 +94,15 @@ tinymce.init({
             <div class="panel-heading">Tags</div>
             <div class="panel-body no-padding">
               <ul>
-                @for($i = 1; $i <= 7; $i++)
+                @foreach($tags as $tag)
                 <li><div class="checkbox">
                     <label>
-                      <input type="checkbox" name="tags[]" value="{{ $i }}">
-                      Tag {{ $i }}
+                      <input type="checkbox" {{ isset($post->tag_ids) && in_array($tag->_id, $post->tag_ids) ? 'checked="checked"' : "" }}
+                      name="tags[]" value="{{ $tag->_id }}">
+                      {{ $tag->name }}
                     </label>
                   </div></li>
-                @endfor
+                @endforeach
               </ul>
             </div>
           </div>

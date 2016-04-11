@@ -44,14 +44,18 @@
                 @if(!$post->categories->count())
                   Uncategorized
                 @else
-                  {{ implode(", ", $post->categories) }}
+                  @foreach($post->categories as $category)
+                    {{ $category->name }},
+                  @endforeach
                 @endif
               </td>
               <td>
                 @if(!$post->tags->count())
                   --
                 @else
-                  {{ implode(", ", $post->tags) }}
+                  @foreach($post->tags as $tag)
+                    {{ $tag->name }},
+                  @endforeach
                 @endif
               </td>
               <td>{{ $post->comments->count() }}</td>

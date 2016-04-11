@@ -35,7 +35,22 @@ class PostsController extends Controller
    * @return \Illuminate\Http\Response
    */
   protected function create() {
+    $this->shareCategoriesAndTags();
     return view('admin.posts.create');
+  }
+
+  public function validatePost(Request $request) {
+    $validator = $this->validator($request->all());
+
+    if($result = $this->redirectBackIfValidatorFails($validator)) {
+      $service = new MessageService();
+      $service->addMessage(MessageService::TYPE_ERROR, "Please, check the data you've submitted and try again.");
+      $request->session()->flash('flashMessages', $service->getMessages());
+
+      return $result;
+    }
+
+    return null;
   }
 
   /**
@@ -44,29 +59,20 @@ class PostsController extends Controller
    * @return \Illuminate\Http\Response
    */
   protected function store(Request $request) {
-    $validator = $this->validator($request->all());
-
-    $service = new MessageService();
-
-    if($result = $this->redirectBackIfValidatorFails($validator)) {
-      $service->addMessage(MessageService::TYPE_ERROR, "Please, check the data you've submitted and try again.");
-      $request->session()->flash('flashMessages', $service->getMessages());
-
-      return $result;
+    if($validationResult = $this->validatePost($request)) {
+      return $validationResult;
     }
 
     $post = new Post;
-    $post->title = $request->input('title');
-    $post->text = $request->input('text');
-    // $post->draft = true;
-    $post->author_id = Auth::user()->id;
-
+    $this->setPostValues($post, $request);
     $post->save();
 
-    $service->addMessage(MessageService::TYPE_SUCCESS, "Post saved successfully");
-    $request->session()->flash('flashMessages', $service->getMessages());
+    $this->setPostCategories($post, $request);
+    $this->setPostTags($post, $request);
 
-    return redirect()->action('Admin\PostsController@edit', ['id' => $post->_id]);
+    $this->addSuccessMessage($request);
+
+    return redirect()->action('Admin\PostsController@edit', ['posts' => $post->_id]);
   }
 
   /**
@@ -83,15 +89,52 @@ class PostsController extends Controller
       ]);
   }
 
+  protected function setPostValues(Post $post, Request $request) {
+    $post->title = $request->input('title');
+    $post->text = $request->input('text');
+    $post->draft = $request->input('btn_draft') ? true : false;
+    $post->author_id = Auth::user()->id;
+  }
 
+  protected function setPostCategories(Post $post, Request $request) {
+    foreach($request->input('categories') as $categoryId) {
+      $category = Category::find($categoryId);
+      $post->categories()->save($category);
+    }
+  }
+
+  protected function setPostTags(Post $post, Request $request) {
+    foreach($request->input('tags') as $tagId) {
+      $tag = Tag::find($tagId);
+      $post->tags()->save($tag);
+    }
+  }
+
+  protected function addSuccessMessage(Request $request) {
+    $service = new MessageService();
+    $message = $request->input('btn_draft') ? "Post saved as draft" : "Post saved";
+    $service->addMessage(MessageService::TYPE_SUCCESS, $message);
+    $request->session()->flash('flashMessages', $service->getMessages());
+  }
+
+  protected function shareCategoriesAndTags() {
+    $categories = Category::all();
+    $tags = Tag::all();
+
+    view()->share('categories', $categories);
+    view()->share('tags', $tags);
+  }
 
   /**
    * Show the form to update a post
    *
+   * @param  string  $id
    * @return \Illuminate\Http\Response
    */
-  protected function edit() {
-    return 'form will be displayed';
+  protected function edit(string $id) {
+    $post = Post::find($id);
+    $this->shareCategoriesAndTags();
+    return view('admin.posts.edit')->with('post', $post);
   }
 
   /**
@@ -99,8 +142,22 @@ class PostsController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  protected function update() {
-    return 'post will be updated';
+  protected function update(string $id, Request $request) {
+    if($validationResult = $this->validatePost($request)) {
+      return $validationResult;
+    }
+
+    $post = Post::find($id);
+    $this->setPostValues($post, $request);
+    $post->save();
+
+    $this->setPostCategories($post, $request);
+    $this->setPostTags($post, $request);
+
+
+    $this->addSuccessMessage($request);
+
+    return redirect()->action('Admin\PostsController@edit', ['posts' => $post->_id]);
   }
 
   /**
