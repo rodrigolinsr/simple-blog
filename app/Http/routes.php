@@ -19,7 +19,10 @@ Route::group(['middlewareGroups' => ['web']], function () {
     Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function () {
       // Dashboard routes
       Route::get('/', 'DashboardController@index');
-      Route::post('/dashboard/settings', 'DashboardController@saveSettings');
-      Route::post('/dashboard/post/draft', 'DashboardController@savePostAsDraft');
+      Route::post('dashboard/settings', 'DashboardController@saveSettings');
+      Route::post('dashboard/post/draft', 'DashboardController@savePostAsDraft');
+
+      // Posts routes
+      Route::resource('posts', 'PostsController');
     });
 });

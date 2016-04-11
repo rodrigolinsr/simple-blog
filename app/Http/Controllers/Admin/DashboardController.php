@@ -102,9 +102,6 @@ class DashboardController extends Controller
 
     $post->save();
 
-    $comment = new PostComment(['post_id' => $post->_id, 'comment' => 'test']);
-    $comment->save();
-
     $urlToPost = url('/admin/posts/edit', ['id' => $post->_id]);
 
     $service->addMessage(MessageService::TYPE_SUCCESS, "Post saved successfully as draft.

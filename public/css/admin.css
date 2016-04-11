@@ -2,3 +2,24 @@
   display: inline-block;
   width: 20px;
 }
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.mce-edit-area {
+  border-width: 1px 1px 0 0 !important;
+}
+
+.panel-categories ul {
+  list-style: none;
+}
+
+.panel-categories .panel-body {
+  height: 150px;
+  overflow-y: auto;
+}
