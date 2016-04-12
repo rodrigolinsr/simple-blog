@@ -23,7 +23,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-striped table-bordered no-margin">
+        <table class="table list-table table-striped table-bordered no-margin">
           <thead>
             <tr>
               <th width="350">Title</th>
@@ -32,6 +32,7 @@
               <th>Tags</th>
               <th>Comments</th>
               <th width="160">Date Published</th>
+              <th width="110">Status</th>
               <th width="100">Actions</th>
             </tr>
           </thead>
@@ -61,6 +62,13 @@
                 </td>
                 <td>{{ $post->comments->count() }}</td>
                 <td>{{ $post->published_at ?? "-" }}</td>
+                <td>
+                  @if($post->draft)
+                    <span class="label label-default"><i class="fa fa-eye-slash"></i> Draft</span>
+                  @else
+                    <span class="label label-success"><i class="fa fa-check-square-o"></i> Published</span>
+                  @endif
+                </td>
                 <td>
                   <div class="btn-group btn-group-xs" role="group" aria-label="Action buttons">
                     <a href="{{ action('Admin\PostsController@edit', ['id' => $post->_id]) }}" class="btn btn-warning">Edit</a>

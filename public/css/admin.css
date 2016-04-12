@@ -23,3 +23,11 @@
   height: 150px;
   overflow-y: auto;
 }
+
+.list-table .label {
+  font-size: 13px !important;
+}
+
+.list-table .btn {
+  font-size: 13px !important;
+}
