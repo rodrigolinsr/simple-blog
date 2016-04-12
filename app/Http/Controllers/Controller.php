@@ -13,6 +13,8 @@ use Illuminate\Contracts\Validation\Validator;
 class Controller extends BaseController {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
+    protected $pageSize = 10;
+
     protected function redirectBackIfValidatorFails(Validator $validator) {
       if ($validator->fails()) {
         return redirect()

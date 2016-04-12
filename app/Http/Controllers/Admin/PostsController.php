@@ -25,7 +25,7 @@ class PostsController extends Controller
    * @return \Illuminate\Http\Response
    */
   protected function index() {
-    $posts = Post::all();
+    $posts = Post::paginate($this->pageSize);
     return view('admin.posts.index')->with('posts', $posts);
   }
 

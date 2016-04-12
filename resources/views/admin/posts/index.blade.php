@@ -23,7 +23,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered no-margin">
           <thead>
             <tr>
               <th width="350">Title</th>
@@ -36,52 +36,43 @@
             </tr>
           </thead>
           <tbody>
-          @foreach($posts as $key => $post)
+          @if(!$posts->count())
             <tr>
-              <td>{{ $post->title }}</td>
-              <td>{{ $post->author->name }}</td>
-              <td>
-                @if(!$post->categories->count())
-                  Uncategorized
-                @else
-                  @foreach($post->categories as $category)
-                    {{ $category->name }},
-                  @endforeach
-                @endif
-              </td>
-              <td>
-                @if(!$post->tags->count())
-                  --
-                @else
-                  @foreach($post->tags as $tag)
-                    {{ $tag->name }},
-                  @endforeach
-                @endif
-              </td>
-              <td>{{ $post->comments->count() }}</td>
-              <td>{{ $post->updated_at }}</td>
-              <td>
-                <div class="btn-group btn-group-xs" role="group" aria-label="Action buttons">
-                  <a href="#" type="button" class="btn btn-warning">Edit</a>
-                  <a href="#" type="button" class="btn btn-danger">Delete</a>
-                </div>
-              </td>
+              <td colspan="100" align="center">No records to display.</td>
             </tr>
-          @endforeach
+          @else
+            @foreach($posts as $key => $post)
+              <tr>
+                <td><a href="{{ action('Admin\PostsController@edit', ['id' => $post->_id]) }}">{{ $post->title }}</a></td>
+                <td>{{ $post->author->name }}</td>
+                <td>
+                  @if(!$post->categories->count())
+                    Uncategorized
+                  @else
+                    {{ $post->categories->implode('name', ', ') }}
+                  @endif
+                </td>
+                <td>
+                  @if(!$post->tags->count())
+                    --
+                  @else
+                    {{ $post->tags->implode('name', ', ') }}
+                  @endif
+                </td>
+                <td>{{ $post->comments->count() }}</td>
+                <td>{{ $post->updated_at }}</td>
+                <td>
+                  <div class="btn-group btn-group-xs" role="group" aria-label="Action buttons">
+                    <a href="{{ action('Admin\PostsController@edit', ['id' => $post->_id]) }}" class="btn btn-warning">Edit</a>
+                    <a href="#" class="btn btn-danger">Delete</a>
+                  </div>
+                </td>
+              </tr>
+            @endforeach
+          @endif
           </tbody>
         </table>
-
-        <!-- <div class="row">
-          <div class="col-md-12">
-            <ul class="pagination">
-              <li class="disabled"><a>&lt; Previous</a></li>
-              <li class="disabled"><a>1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li class="next"><a href="#" rel="next">Next &gt;</a></li>
-            </ul>
-          </div>
-        </div> -->
+        {!! $posts->links() !!}
       </div>
     </div>
   </div>
