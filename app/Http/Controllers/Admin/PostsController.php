@@ -70,7 +70,7 @@ class PostsController extends Controller
     $this->setPostCategories($post, $request);
     $this->setPostTags($post, $request);
 
-    $this->addSuccessMessage($request);
+    $this->addSuccessMessage($request, $this->getViewPostURL($post->_id));
 
     return redirect()->action('Admin\PostsController@edit', ['posts' => $post->_id]);
   }
@@ -110,9 +110,19 @@ class PostsController extends Controller
     }
   }
 
-  protected function addSuccessMessage(Request $request) {
+  protected function addSuccessMessage(Request $request, string $postLink = null) {
     $service = new MessageService();
-    $message = $request->input('btn_draft') ? "Post saved as draft" : "Post saved";
+
+    $message = "";
+    if($request->input('btn_draft')) {
+      $message = "Post saved as draft";
+    } else {
+      $message = "Post saved";
+    }
+    if($postLink) {
+      $message .= ". <a href='$postLink' target='_blank'>Click here</a> to view the post in blog";
+    }
+
     $service->addMessage(MessageService::TYPE_SUCCESS, $message);
     $request->session()->flash('flashMessages', $service->getMessages());
   }
@@ -123,6 +133,10 @@ class PostsController extends Controller
 
     view()->share('categories', $categories);
     view()->share('tags', $tags);
+  }
+
+  protected function getViewPostURL($postId) {
+    return action('IndexController@viewPost', ['id' => $postId]);
   }
 
   /**
@@ -136,7 +150,7 @@ class PostsController extends Controller
     if(!$post) {
       abort(404);
     }
-    
+
     $this->shareCategoriesAndTags();
     return view('admin.posts.edit')->with('post', $post);
   }
@@ -158,8 +172,7 @@ class PostsController extends Controller
     $this->setPostCategories($post, $request);
     $this->setPostTags($post, $request);
 
-
-    $this->addSuccessMessage($request);
+    $this->addSuccessMessage($request, $this->getViewPostURL($post->_id));
 
     return redirect()->action('Admin\PostsController@edit', ['posts' => $post->_id]);
   }
