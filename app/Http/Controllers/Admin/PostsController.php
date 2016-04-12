@@ -39,20 +39,6 @@ class PostsController extends Controller
     return view('admin.posts.create');
   }
 
-  public function validatePost(Request $request) {
-    $validator = $this->validator($request->all());
-
-    if($result = $this->redirectBackIfValidatorFails($validator)) {
-      $service = new MessageService();
-      $service->addMessage(MessageService::TYPE_ERROR, "Please, check the data you've submitted and try again.");
-      $request->session()->flash('flashMessages', $service->getMessages());
-
-      return $result;
-    }
-
-    return null;
-  }
-
   /**
    * Create a new post
    *
@@ -75,6 +61,20 @@ class PostsController extends Controller
     return redirect()->action('Admin\PostsController@edit', ['posts' => $post->_id]);
   }
 
+  public function validatePost(Request $request) {
+    $validator = $this->validator($request->all());
+
+    if($result = $this->redirectBackIfValidatorFails($validator)) {
+      $service = new MessageService();
+      $service->addMessage(MessageService::TYPE_ERROR, "Please, check the data you've submitted and try again.");
+      $request->session()->flash('flashMessages', $service->getMessages());
+
+      return $result;
+    }
+
+    return null;
+  }
+
   /**
    * Get a validator for an incoming post request.
    *
@@ -93,6 +93,12 @@ class PostsController extends Controller
     $post->title = $request->input('title');
     $post->text = $request->input('text');
     $post->draft = $request->input('btn_draft') ? true : false;
+    $datePublished = new \DateTime($request->input('published_at'));
+    if(!$request->input('published_at', null) && $request->input('btn_draft')) {
+      // No date publish and saving as draft, clear the published_at
+      $datePublished = null;
+    }
+    $post->published_at = $datePublished;
     $post->author_id = Auth::user()->id;
   }
 

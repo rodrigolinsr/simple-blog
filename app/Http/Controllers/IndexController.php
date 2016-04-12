@@ -13,12 +13,10 @@ class IndexController extends Controller
   protected function index() {
     $blogSettingsIni = BlogSettings::getSettings();
 
-    /*
-     * TODO:
-     * 1) Rank tags
-     * Nice to have: published_at
-     */
-    $posts = Post::where('draft', '=', false)->orderBy('updated_at', 'desc')->get();
+    $posts = Post::where('draft', '=', false)
+                 ->where('published_at', '<=', new \DateTime())
+                 ->orderBy('published_at', 'desc')->get();
+
     foreach($posts as $post) {
       $post->truncatedText = Utils::printTruncated(200, $post->text);
     }

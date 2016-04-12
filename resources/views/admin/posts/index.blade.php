@@ -31,7 +31,7 @@
               <th>Categories</th>
               <th>Tags</th>
               <th>Comments</th>
-              <th width="160">Date</th>
+              <th width="160">Date Published</th>
               <th width="100">Actions</th>
             </tr>
           </thead>
@@ -60,7 +60,7 @@
                   @endif
                 </td>
                 <td>{{ $post->comments->count() }}</td>
-                <td>{{ $post->updated_at }}</td>
+                <td>{{ $post->published_at ?? "-" }}</td>
                 <td>
                   <div class="btn-group btn-group-xs" role="group" aria-label="Action buttons">
                     <a href="{{ action('Admin\PostsController@edit', ['id' => $post->_id]) }}" class="btn btn-warning">Edit</a>

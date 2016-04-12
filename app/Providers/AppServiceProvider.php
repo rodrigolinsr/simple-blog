@@ -21,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
       view()->share('generalBlogDescription', $blogSettingsIni['blog_description']);
 
       $categories = Category::all();
+
+      /*
+       * TODO:
+       * 1) Rank tags
+       */
       $tags = Tag::all();
 
       view()->share('generalBlogCategories', $categories);

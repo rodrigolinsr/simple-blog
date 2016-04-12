@@ -1,6 +1,6 @@
 {{ $formTag }}
   <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-8">
       <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
         <input type="text" class="form-control" name="title" id="title"
           value="{{ old('title', $post->title ?? "") }}">
@@ -19,7 +19,7 @@
         @endif
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="row">
         <div class="col-md-12">
           <div class="panel panel-primary">
@@ -43,6 +43,21 @@
                 <tr>
                   <td><strong>Last Modified</strong></td>
                   <td>{{ $post->updated_at ?? "-" }}</td>
+                </tr>
+                <tr class="{{ $errors->has('published_at') ? ' has-error' : '' }}">
+                  <td><strong>Published</strong></td>
+                  <td>
+                    <input type="datetime-local" class="form-control"
+                      name="published_at"
+                      value="{{ old('published_at',
+                                    $post->published_at ? date('Y-m-d\TH:i', strtotime($post->published_at))
+                                    : "") }}" />
+                      @if ($errors->has('published_at'))
+                        <span class="help-block">
+                          <strong>{{ $errors->first('published_at') }}</strong>
+                        </span>
+                      @endif
+                  </td>
                 </tr>
               </table>
             </div>
