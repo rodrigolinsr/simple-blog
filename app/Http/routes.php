@@ -31,7 +31,12 @@ Route::group(['middlewareGroups' => ['web']], function () {
       // Posts routes
       Route::resource('posts', 'PostsController');
 
-      // Posts routes
+      // Users routes
       Route::resource('users', 'UsersController');
+
+      // Comments routes
+      Route::get('comments', 'CommentsController@index');
+      Route::post('comments/approve', 'CommentsController@approve');
+      Route::delete('comments/delete', 'CommentsController@destroy');
     });
 });

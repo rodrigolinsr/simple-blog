@@ -57,7 +57,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{{ action('Admin\DashboardController@index') }}">Dashboard</a></li>
                     <li><a href="{{ action('Admin\PostsController@index') }}">Posts</a></li>
-                    <li><a href="#">Comments</a></li>
+                    <li><a href="{{ action('Admin\CommentsController@index') }}">Comments</a></li>
                     <li><a href="#">Categories</a></li>
                     <li><a href="#">Tags</a></li>
                     <li><a href="{{ action('Admin\UsersController@index') }}">Users</a></li>

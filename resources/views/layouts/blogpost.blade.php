@@ -53,7 +53,7 @@
   <div id="post-comments" class="panel panel-primary">
     <div class="panel-heading">
       <i class="fa fa-comments fa-btn"></i>
-      {{ $post->comments()->where('draft', '=', false)->count() }} Comments
+      {{ $post->comments()->where('pending', false)->count() }} Comments
     </div>
     <div class="panel-body">
       <form method="post" action="{{ action('IndexController@postComment', ['id' => $post->_id]) }}">
@@ -102,7 +102,7 @@
           </div>
         </div>
       </form>
-      @foreach($post->comments()->where('draft', '=', false)->get() as $comment)
+      @foreach($post->comments()->where('pending', false)->get() as $comment)
       <div class="row">
         <div class="col-md-12">
           <header>

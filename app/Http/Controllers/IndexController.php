@@ -49,7 +49,7 @@ class IndexController extends Controller
     }
 
     $comment = new PostComment($request->except('_token'));
-    $comment->draft = true;
+    $comment->pending = true;
     $post->comments()->save($comment);
 
     $service = new MessageService();
