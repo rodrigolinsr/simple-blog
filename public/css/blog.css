@@ -108,3 +108,12 @@ body {
 .entry-content img {
   width: 100% !important;
 }
+
+article {
+  margin-bottom: 50px;
+}
+
+.back-all-posts {
+  margin-top: 50px;
+  text-align: right;
+}

@@ -15,6 +15,7 @@ Route::group(['middlewareGroups' => ['web']], function () {
     Route::auth();
 
     Route::get('/', 'IndexController@index');
+    Route::get('/post/{id}', 'IndexController@viewPost');
 
     Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function () {
       // Dashboard routes
