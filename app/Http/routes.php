@@ -15,6 +15,10 @@ Route::group(['middlewareGroups' => ['web']], function () {
     Route::auth();
 
     Route::get('/', 'IndexController@index');
+    Route::get('/home', function() {
+      return redirect('/');
+    });
+
     Route::get('/post/{id}', 'IndexController@viewPost');
 
     Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function () {
