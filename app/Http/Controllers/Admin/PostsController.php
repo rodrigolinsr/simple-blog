@@ -103,6 +103,7 @@ class PostsController extends Controller
   }
 
   protected function setPostCategories(Post $post, Request $request) {
+    $post->categories()->sync([]);
     foreach($request->input('categories', []) as $categoryId) {
       $category = Category::find($categoryId);
       $post->categories()->save($category);
@@ -110,6 +111,7 @@ class PostsController extends Controller
   }
 
   protected function setPostTags(Post $post, Request $request) {
+    $post->tags()->sync([]);
     foreach($request->input('tags', []) as $tagId) {
       $tag = Tag::find($tagId);
       $post->tags()->save($tag);

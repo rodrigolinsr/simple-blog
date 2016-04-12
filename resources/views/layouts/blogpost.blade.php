@@ -21,20 +21,18 @@
           @endif
         </span>
       </span>
+      @if(count($post->tags))
       <br />
       <span class="tag-name" style="display: inline-block; float: right;"><strong>Tags</strong>:
         <span>
-          @if(!count($post->tags))
-          <a href="#" rel="tag">Uncategorized</a>
-          @else
-            <?php $tagsLinks = [] ?>
-            @foreach($post->tags as $tag)
-              <?php $tagsLinks[] = "<a href='#' rel='tag'>$tag->name</a>" ?>
-            @endforeach
-            {!! implode(', ', $tagsLinks) !!}
-          @endif
+          <?php $tagsLinks = [] ?>
+          @foreach($post->tags as $tag)
+            <?php $tagsLinks[] = "<a href='#' rel='tag'>$tag->name</a>" ?>
+          @endforeach
+          {!! implode(', ', $tagsLinks) !!}
         </span>
       </span>
+      @endif
       <br style="break: all;" />
     </div>
   </header>
