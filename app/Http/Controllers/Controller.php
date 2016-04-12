@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Request;
+
+use App\MyLib\MessageService;
 
 class Controller extends BaseController {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
@@ -21,6 +24,18 @@ class Controller extends BaseController {
                 ->back()
                 ->withErrors($validator)
                 ->withInput();
+      }
+
+      return null;
+    }
+
+    protected function validateEntity(Request $request, Validator $validator) {
+      if($result = $this->redirectBackIfValidatorFails($validator)) {
+        $service = new MessageService();
+        $service->addMessage(MessageService::TYPE_ERROR, "Please, check the data you've submitted and try again.");
+        $request->session()->flash('flashMessages', $service->getMessages());
+
+        return $result;
       }
 
       return null;

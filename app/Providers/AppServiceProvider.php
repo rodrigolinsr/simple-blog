@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\MyLib\BlogSettings;
 
-use App\Models\{Category, Tag};
+use App\Models\{Category, Tag, User};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +30,13 @@ class AppServiceProvider extends ServiceProvider
 
       view()->share('generalBlogCategories', $categories);
       view()->share('generalBlogTags', $tags);
+
+      /*
+       * Models events
+       */
+       User::deleting(function ($user) {
+        $user->posts()->delete();
+      });
     }
 
     /**

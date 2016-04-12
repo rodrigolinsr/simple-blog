@@ -45,7 +45,8 @@ class PostsController extends Controller
    * @return \Illuminate\Http\Response
    */
   protected function store(Request $request) {
-    if($validationResult = $this->validatePost($request)) {
+    $validator = $this->validator($request->all());
+    if($validationResult = $this->validateEntity($request, $validator)) {
       return $validationResult;
     }
 
@@ -58,21 +59,7 @@ class PostsController extends Controller
 
     $this->addSuccessMessage($request, $this->getViewPostURL($post->_id));
 
-    return redirect()->action('Admin\PostsController@edit', ['posts' => $post->_id]);
-  }
-
-  public function validatePost(Request $request) {
-    $validator = $this->validator($request->all());
-
-    if($result = $this->redirectBackIfValidatorFails($validator)) {
-      $service = new MessageService();
-      $service->addMessage(MessageService::TYPE_ERROR, "Please, check the data you've submitted and try again.");
-      $request->session()->flash('flashMessages', $service->getMessages());
-
-      return $result;
-    }
-
-    return null;
+    return redirect()->action('Admin\PostsController@edit', ['post' => $post->_id]);
   }
 
   /**
@@ -169,7 +156,8 @@ class PostsController extends Controller
    * @return \Illuminate\Http\Response
    */
   protected function update(string $id, Request $request) {
-    if($validationResult = $this->validatePost($request)) {
+    $validator = $this->validator($request->all());
+    if($validationResult = $this->validateEntity($request, $validator)) {
       return $validationResult;
     }
 
@@ -182,7 +170,7 @@ class PostsController extends Controller
 
     $this->addSuccessMessage($request, $this->getViewPostURL($post->_id));
 
-    return redirect()->action('Admin\PostsController@edit', ['posts' => $post->_id]);
+    return redirect()->action('Admin\PostsController@edit', ['post' => $post->_id]);
   }
 
   /**

@@ -50,7 +50,7 @@
                     <input type="datetime-local" class="form-control"
                       name="published_at"
                       value="{{ old('published_at',
-                                    $post->published_at ? date('Y-m-d\TH:i', strtotime($post->published_at))
+                                    (isset($post) && $post->published_at) ? date('Y-m-d\TH:i', strtotime($post->published_at))
                                     : "") }}" />
                       @if ($errors->has('published_at'))
                         <span class="help-block">
@@ -116,7 +116,7 @@
     </div>
   </div>
 
-</form>
+{!! Form::close() !!}
 
 @section('bottomScripts')
 <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>

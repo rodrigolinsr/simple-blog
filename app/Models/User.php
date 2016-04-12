@@ -35,7 +35,7 @@ class User extends Eloquent implements \Illuminate\Contracts\Auth\Authenticatabl
         return $this->email;
     }
 
-    public function author() {
+    public function posts() {
       return $this->hasMany(Post::class);
     }
 }

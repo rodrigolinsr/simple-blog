@@ -25,5 +25,8 @@ Route::group(['middlewareGroups' => ['web']], function () {
 
       // Posts routes
       Route::resource('posts', 'PostsController');
+
+      // Posts routes
+      Route::resource('users', 'UsersController');
     });
 });

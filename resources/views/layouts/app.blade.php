@@ -56,10 +56,11 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ action('Admin\DashboardController@index') }}">Dashboard</a></li>
-                    <li><a href="{{ url('/admin/posts') }}">Posts</a></li>
-                    <li><a href="{{ url('/admin/comments') }}">Comments</a></li>
-                    <li><a href="{{ url('/admin/categories') }}">Categories</a></li>
-                    <li><a href="{{ url('/admin/tags') }}">Tags</a></li>
+                    <li><a href="{{ action('Admin\PostsController@index') }}">Posts</a></li>
+                    <li><a href="#">Comments</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Tags</a></li>
+                    <li><a href="{{ action('Admin\UsersController@index') }}">Users</a></li>
                 </ul>
               @endif
 
