@@ -72,8 +72,12 @@ class Utils {
     }
 
     // Close any open tags.
-    while (!empty($tags)) {
-      $returnStr .= sprintf('</%s>', array_pop($tags));
+    if(!empty($tags)) {
+      $returnStr .= '...';
+
+      while (!empty($tags)) {
+        $returnStr .= sprintf('</%s>', array_pop($tags));
+      }
     }
 
     return $returnStr;

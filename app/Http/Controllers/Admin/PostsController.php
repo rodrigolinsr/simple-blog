@@ -84,7 +84,7 @@ class PostsController extends Controller
   protected function validator(array $data)
   {
       return Validator::make($data, [
-          'title' => 'required_without:text|min:3|max:100',
+          'title' => 'required_without:text|min:3|max:255',
           'text' => 'required_without:title|min:3',
       ]);
   }

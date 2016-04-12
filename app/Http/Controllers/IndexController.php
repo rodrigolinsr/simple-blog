@@ -18,7 +18,7 @@ class IndexController extends Controller
                  ->orderBy('published_at', 'desc')->get();
 
     foreach($posts as $post) {
-      $post->truncatedText = Utils::printTruncated(200, $post->text);
+      $post->truncatedText = Utils::printTruncated(1000, $post->text);
     }
 
     return view('index')->with('welcomeTitle', $blogSettingsIni['welcome_title'])

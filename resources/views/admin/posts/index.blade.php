@@ -33,7 +33,7 @@
               <th>Comments</th>
               <th width="160">Date Published</th>
               <th width="110">Status</th>
-              <th width="100">Actions</th>
+              <th width="110">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -44,7 +44,7 @@
           @else
             @foreach($posts as $key => $post)
               <tr>
-                <td><a href="{{ action('Admin\PostsController@edit', ['id' => $post->_id]) }}">{{ $post->title }}</a></td>
+                <td class="auto-break-words"><a href="{{ action('Admin\PostsController@edit', ['id' => $post->_id]) }}">{{ $post->title }}</a></td>
                 <td>{{ $post->author->name }}</td>
                 <td>
                   @if(!$post->categories->count())

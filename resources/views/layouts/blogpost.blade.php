@@ -8,18 +8,34 @@
       <span class="by-line"> by
         <span class="author"><a href="#">{{ $post->author->name }}</a></span>
       </span>
-      <br />
-      <span class="category-name">Categories:
-        <span class="">
+      <span class="category-name"><strong>Categories</strong>:
+        <span>
           @if(!count($post->categories))
           <a href="#" rel="category">Uncategorized</a>
           @else
+            <?php $categoriesLinks = [] ?>
             @foreach($post->categories as $category)
-              <a href="#" rel="category">{{ $category->name }}</a>,
+              <?php $categoriesLinks[] = "<a href='#' rel='category'>$category->name</a>" ?>
             @endforeach
+            {!! implode(', ', $categoriesLinks) !!}
           @endif
         </span>
       </span>
+      <br />
+      <span class="tag-name" style="display: inline-block; float: right;"><strong>Tags</strong>:
+        <span>
+          @if(!count($post->tags))
+          <a href="#" rel="tag">Uncategorized</a>
+          @else
+            <?php $tagsLinks = [] ?>
+            @foreach($post->tags as $tag)
+              <?php $tagsLinks[] = "<a href='#' rel='tag'>$tag->name</a>" ?>
+            @endforeach
+            {!! implode(', ', $tagsLinks) !!}
+          @endif
+        </span>
+      </span>
+      <br style="break: all;" />
     </div>
   </header>
   <div class="entry-content">
