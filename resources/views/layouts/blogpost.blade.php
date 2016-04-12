@@ -27,7 +27,7 @@
       {!! $post->truncatedText !!}
       @if(strlen($post->truncatedText) < strlen($post->text))
       <div>
-        <a href="#">Read more >></a>
+        <a href="{{ action('IndexController@viewPost', ['id' => $post->_id]) }}">Read more >></a>
       </div>
       @endif
     @else
