@@ -34,7 +34,7 @@
 
               <?php
                 $hideChangePasswordButton = false;
-                if($errors->has('password') || $errors->has('password_confirmation')) {
+                if(!isset($user) || $errors->has('password') || $errors->has('password_confirmation')) {
                   $hideChangePasswordButton = true;
                 }
               ?>
