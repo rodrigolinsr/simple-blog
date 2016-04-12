@@ -77,7 +77,7 @@
                     <ul class="dropdown-menu" role="menu">
                       @if(Request::segment(1) === "admin")
                         <li><a href="{{ url('/') }}"><i class="fa fa-btn fa-file-text-o"></i>Blog page</a></li>
-                        <li><a href="{{ url('/admin/profile') }}"><i class="fa fa-btn fa-user"></i>Profile</a></li>
+                        <li><a href="{{ action('Admin\UsersController@edit', ['id' => Auth::user()->_id]) }}"><i class="fa fa-btn fa-user"></i>Profile</a></li>
                       @else
                         <li><a href="{{ url('/admin') }}"><i class="fa fa-btn fa-tachometer"></i>Admin Panel</a></li>
                       @endif

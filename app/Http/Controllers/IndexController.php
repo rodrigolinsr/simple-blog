@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
-use App\MyLib\{BlogSettings, Utils};
-use App\Models\{Post, Category, Tag};
+use App\MyLib\{BlogSettings, Utils, MessageService};
+use App\Models\{Post, Category, Tag, PostComment};
+use Validator;
 
 class IndexController extends Controller
 {
@@ -34,4 +35,43 @@ class IndexController extends Controller
 
     return view('viewpost')->with('post', $post);
   }
+
+  protected function postComment(string $postId, Request $request) {
+    $post = Post::find($postId);
+
+    if(!$post) {
+      abort(404);
+    }
+
+    $validator = $this->commentValidator($request->all());
+    if($validationResult = $this->validateEntity($request, $validator)) {
+      return $validationResult;
+    }
+
+    $comment = new PostComment($request->except('_token'));
+    $comment->draft = true;
+    $post->comments()->save($comment);
+
+    $service = new MessageService();
+    $service->addMessage(MessageService::TYPE_SUCCESS, "Your comment has been sent and will be approved by the administrator.");
+    $request->session()->flash('flashMessages', $service->getMessages());
+    return redirect()
+            ->back();
+  }
+
+  /**
+   * Get a validator for an incoming add comment request.
+   *
+   * @param  array  $data
+   * @return \Illuminate\Contracts\Validation\Validator
+   */
+  protected function commentValidator(array $data)
+  {
+    return Validator::make($data, [
+      'name' => 'required|max:255',
+      'email' => 'email|max:255',
+      'comment' => 'required',
+    ]);
+  }
+
 }

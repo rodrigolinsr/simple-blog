@@ -46,10 +46,92 @@
       @endif
     @else
       {!! $post->text !!}
-      <div class="back-all-posts">
-        <a href="{{ action('IndexController@index') }}">
-          << Back to all posts</a>
-      </div>
     @endif
   </div>
 </article>
+@if(Request::segment(1) === "post")
+  <div id="post-comments" class="panel panel-primary">
+    <div class="panel-heading">
+      <i class="fa fa-comments fa-btn"></i>
+      {{ $post->comments()->where('draft', '=', false)->count() }} Comments
+    </div>
+    <div class="panel-body">
+      <form method="post" action="{{ action('IndexController@postComment', ['id' => $post->_id]) }}">
+        {!! csrf_field() !!}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+              <input type="text" class="form-control" name="name" id="name"
+                placeholder="Your name" value="{{ old('name') }}">
+              @if ($errors->has('name'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('name') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+              <input type="text" class="form-control" name="email" id="email"
+                placeholder="Your e-mail" value="{{ old('email') }}">
+              @if ($errors->has('email'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('email') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group{{ $errors->has('comment') ? ' has-error' : '' }}">
+              <textarea class="form-control" rows="4" name="comment" id="comment" placeholder="Join the discussion...">{{ old('comment') }}</textarea>
+              @if ($errors->has('comment'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('comment') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" align="right">
+            <button class="btn btn-primary">
+              <i class="fa fa-comment fa-btn"></i>
+              Send Comment</button>
+          </div>
+        </div>
+      </form>
+      @foreach($post->comments()->where('draft', '=', false)->get() as $comment)
+      <div class="row">
+        <div class="col-md-12">
+          <header>
+            <span><a href="{{ $comment->email ? "mailto:$comment->email" : "#" }}">{{ $comment->name }}</a></span>
+            <span class="post-meta">
+              <span class="bullet">•</span>
+              <span class="comment-date text-danger">{{ date('F d, Y \a\t H:i', strtotime($comment->created_at)) }}</span>
+            </span>
+          </header>
+          <p>{{ $comment->comment }}</p>
+        </div>
+      </div>
+      @endforeach
+    </div>
+  </div>
+
+  <div class="back-all-posts">
+    <a href="{{ action('IndexController@index') }}">
+      << Back to all posts</a>
+  </div>
+@endif
+
+@section('bottomScripts')
+  @if ($errors->has('name') or $errors->has('email') or $errors->has('comment'))
+    <script>
+    $(document).ready(function() {
+      var top = document.getElementById("post-comments").offsetTop;
+      window.scrollTo(0, top);
+    });
+    </script>
+  @endif
+@endsection

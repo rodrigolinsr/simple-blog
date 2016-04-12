@@ -20,6 +20,7 @@ Route::group(['middlewareGroups' => ['web']], function () {
     });
 
     Route::get('/post/{id}', 'IndexController@viewPost');
+    Route::post('/post/{id}/comments/add/', 'IndexController@postComment');
 
     Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function () {
       // Dashboard routes
