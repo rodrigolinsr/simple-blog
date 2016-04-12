@@ -45,7 +45,7 @@
             @foreach($posts as $key => $post)
               <tr>
                 <td class="auto-break-words"><a href="{{ action('Admin\PostsController@edit', ['id' => $post->_id]) }}">{{ $post->title }}</a></td>
-                <td>{{ $post->author->name }}</td>
+                <td>{{ $post->user->name }}</td>
                 <td>
                   @if(!$post->categories->count())
                     Uncategorized

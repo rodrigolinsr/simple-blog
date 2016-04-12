@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
           $table->string('title');
           $table->text('text');
           $table->boolean('draft');
-          $table->string('author')->index();
+          $table->string('user_id')->index();
           $table->timestamps();
       });
     }

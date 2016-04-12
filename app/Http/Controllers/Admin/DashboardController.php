@@ -98,7 +98,7 @@ class DashboardController extends Controller
     $post->title = $request->input('post_title');
     $post->text = $request->input('post_text');
     $post->draft = true;
-    $post->author_id = Auth::user()->id;
+    $post->user_id = Auth::user()->id;
 
     $post->save();
 

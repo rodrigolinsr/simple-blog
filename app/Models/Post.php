@@ -9,11 +9,11 @@ class Post extends Moloquent {
    *
    * @var array
    */
-  protected $fillable = ['title', 'text', 'draft', 'author_id'];
+  protected $fillable = ['title', 'text', 'draft', 'user_id'];
 
   protected $dates = ['published_at'];
 
-  public function author() {
+  public function user() {
     return $this->belongsTo(User::class);
   }
 

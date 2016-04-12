@@ -86,7 +86,7 @@ class PostsController extends Controller
       $datePublished = null;
     }
     $post->published_at = $datePublished;
-    $post->author_id = Auth::user()->id;
+    $post->user_id = Auth::user()->id;
   }
 
   protected function setPostCategories(Post $post, Request $request) {

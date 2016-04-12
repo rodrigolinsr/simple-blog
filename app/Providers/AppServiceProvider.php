@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
       /*
        * Models events
        */
-       User::deleting(function ($user) {
+      User::deleting(function ($user) {
         $user->posts()->delete();
       });
     }

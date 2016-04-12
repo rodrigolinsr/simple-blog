@@ -6,7 +6,7 @@
         <span class="entry-date text-danger">{{ date('F d, Y \a\t H:i', strtotime($post->published_at)) }}</span>
       </span>
       <span class="by-line"> by
-        <span class="author"><a href="#">{{ $post->author->name }}</a></span>
+        <span class="author"><a href="#">{{ $post->user->name }}</a></span>
       </span>
       <span class="category-name"><strong>Categories</strong>:
         <span>
