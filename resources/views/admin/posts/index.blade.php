@@ -64,8 +64,13 @@
                 <td>
                   <div class="btn-group btn-group-xs" role="group" aria-label="Action buttons">
                     <a href="{{ action('Admin\PostsController@edit', ['id' => $post->_id]) }}" class="btn btn-warning">Edit</a>
-                    <a href="#" class="btn btn-danger">Delete</a>
+                    <a href="javascript:;" class="btn btn-danger delete-record">Delete</a>
                   </div>
+                  {!! @Form::open([
+                    'action' => ['Admin\PostsController@destroy', $post->_id],
+                    'method' => 'delete'
+                  ]) !!}
+                  {!! Form::close() !!}
                 </td>
               </tr>
             @endforeach
@@ -77,4 +82,9 @@
     </div>
   </div>
 </div>
+@include('admin.common.confirmmodal')
+@endsection
+
+@section('bottomScripts')
+  <script src="{{ url('js/delete-record-confirm.js') }}"></script>
 @endsection

@@ -40,6 +40,7 @@ sed -i 's/user = www-data/user = vagrant/g' /etc/php/7.0/fpm/pool.d/www.conf
 sed -i 's/owner = www-data/owner = vagrant/g' /etc/php/7.0/fpm/pool.d/www.conf
 sed -i 's/group = www-data/group = vagrant/g' /etc/php/7.0/fpm/pool.d/www.conf
 sed -i 's/user www-data/user vagrant/g' /etc/nginx/nginx.conf
+sed -i 's/sendfile on/sendfile off/g' /etc/nginx/nginx.conf
 
 /etc/init.d/nginx restart
 

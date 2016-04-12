@@ -1,13 +1,3 @@
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-<script>
-tinymce.init({
-  selector:'textarea',
-  plugins : ["advlist hr autolink textcolor lists link image charmap print preview anchor", "searchreplace visualblocks code", "insertdatetime media table contextmenu paste"],
-  toolbar : [ "bold italic strikethrough bullist numlist blockquote hr alignleft aligncenter alignright alignjustify link unlink image",
-              "styleselect fontsizeselect underline forecolor pastetext removeformat charmap outdent indent undo redo code",
-            ]
-});
-</script>
 {{ $formTag }}
   <div class="row">
     <div class="col-md-9">
@@ -112,3 +102,8 @@ tinymce.init({
   </div>
 
 </form>
+
+@section('bottomScripts')
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script src="{{ url('js/tinymce-config.js') }}"></script>
+@endsection

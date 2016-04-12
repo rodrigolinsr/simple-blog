@@ -6,5 +6,5 @@
 
 @section('content')
 <div class="title">404: Page not found.</div>
-<div class="back-home"><a href="{{ url('/') }}">Back to Home</a></div>
+<div class="back-home"><a href="{{ redirect()->getUrlGenerator()->previous() }}">Back to previous page</a></div>
 @endsection

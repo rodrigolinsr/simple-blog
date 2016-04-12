@@ -133,6 +133,10 @@ class PostsController extends Controller
    */
   protected function edit(string $id) {
     $post = Post::find($id);
+    if(!$post) {
+      abort(404);
+    }
+    
     $this->shareCategoriesAndTags();
     return view('admin.posts.edit')->with('post', $post);
   }
@@ -165,7 +169,19 @@ class PostsController extends Controller
    *
    * @return \Illuminate\Http\Response
    */
-  protected function destroy() {
-    return 'post will be updated';
+  protected function destroy(string $id, Request $request) {
+    $post = Post::find($id);
+
+    if(!$post) {
+      abort(404);
+    }
+
+    $post->delete();
+
+    $service = new MessageService();
+    $service->addMessage(MessageService::TYPE_SUCCESS, "Post deleted");
+    $request->session()->flash('flashMessages', $service->getMessages());
+    return redirect()
+            ->back();
   }
 }

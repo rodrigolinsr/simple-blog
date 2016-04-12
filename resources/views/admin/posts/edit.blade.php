@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h2>Edit Post</h2>
+@include('admin.posts.createeditheader', ['title' => 'Edit Post'])
 
 @include('admin.posts.form', [
   'formTag' => Form::open([
