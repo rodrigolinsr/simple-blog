@@ -102,17 +102,35 @@
           </div>
         </div>
       </form>
-      @foreach($post->comments()->where('pending', false)->get() as $comment)
+      <?php
+      if(!Auth::guest()) {
+        $comments = $post->comments()->get();
+      } else {
+        $comments = $post->comments()->where('pending', false)->get();
+      }
+      ?>
+      @foreach($comments as $comment)
       <div class="row">
         <div class="col-md-12">
           <header>
             <span><a href="{{ $comment->email ? "mailto:$comment->email" : "#" }}">{{ $comment->name }}</a></span>
             <span class="post-meta">
-              <span class="bullet">•</span>
+              <span class="bullet">&bull;</span>
               <span class="comment-date text-danger">{{ date('F d, Y \a\t H:i', strtotime($comment->created_at)) }}</span>
+              @if($comment->pending && !Auth::guest())
+              <span role="presentation" class="dropdown">
+                <a class="dropdown-toggle btn btn-warning btn-xs" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-clock-o fa-btn"></i>Pending <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ action('Admin\CommentsController@approve', ['id' => $comment->_id]) }}"><i class="fa fa-check fa-btn"></i>Approve</a></li>
+                  <li><a href="{{ action('Admin\CommentsController@destroy', ['id' => $comment->_id]) }}"><i class="fa fa-trash fa-btn"></i>Delete</a></li>
+                </ul>
+              </span>
+              @endif
             </span>
           </header>
-          <p>{{ $comment->comment }}</p>
+          <p>{!! nl2br($comment->comment) !!}</p>
         </div>
       </div>
       @endforeach

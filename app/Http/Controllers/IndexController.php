@@ -33,7 +33,8 @@ class IndexController extends Controller
       abort(404);
     }
 
-    return view('viewpost')->with('post', $post);
+    return view('viewpost')->with('post', $post)
+                           ->with('customPageTitle', $post->title." | ");
   }
 
   protected function postComment(string $postId, Request $request) {

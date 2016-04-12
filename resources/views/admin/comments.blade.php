@@ -3,21 +3,23 @@
 @section('content')
 <div class="row">
   <div class="col-md-12">
-    <h2>Posts</h2>
+    <h2>Comments</h2>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-12">
     <ul class="nav nav-tabs">
-      <li role="presentation" class="active"><a href="#">All</a></li>
-      <li role="presentation"><a href="#">Pending&nbsp;&nbsp;<span class="label label-warning">{{ $comments->where('pending', true)->count() }}</span></a></li>
-      <li role="presentation"><a href="#">Approved&nbsp;&nbsp;<span class="label label-primary">{{ $comments->where('pending', false)->count() }}</span></a></li>
+      <li role="presentation" class="{{ !isset($status) ? "active" : "" }}"><a href="{{ action('Admin\CommentsController@index') }}">All</a></li>
+      <li role="presentation" class="{{ isset($status) && $status == 'pending' ? "active" : "" }}"><a href="{{ action('Admin\CommentsController@index', ['status' => 'pending']) }}">Pending&nbsp;&nbsp;<span class="label label-warning">{{ $counters['pending'] }}</span></a></li>
+      <li role="presentation" class="{{ isset($status) && $status == 'approved' ? "active" : "" }}"><a href="{{ action('Admin\CommentsController@index', ['status' => 'approved']) }}">Approved&nbsp;&nbsp;<span class="label label-primary">{{ $counters['approved'] }}</span></a></li>
       <li role="presentation" class="dropdown pull-right">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mass Actions <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="#"><i class="fa fa-check fa-btn"></i>Aprovar</a></li>
-          <li><a href="#"><i class="fa fa-trash fa-btn"></i>Excluir</a></li>
+          @if(!isset($status) || $status == 'pending')
+          <li><a href="javascript:;" onclick="massModerateComments('{{ action('Admin\CommentsController@massApprove') }}', '{{ csrf_token() }}')"><i class="fa fa-check fa-btn"></i>Approve</a></li>
+          @endif
+          <li><a href="javascript:;" onclick="massModerateComments('{{ action('Admin\CommentsController@massDestroy') }}', '{{ csrf_token() }}')"><i class="fa fa-trash fa-btn"></i>Delete</a></li>
         </ul>
       </li>
     </ul>
@@ -25,7 +27,7 @@
 </div>
 <div class="row" style="margin-top: 10px;">
   <div class="col-md-12">
-    <table class="table list-table table-striped table-bordered">
+    <table class="table list-table table-striped table-bordered" id="table-records">
       <thead>
         <tr>
           <th width="30"><input type="checkbox" class="check-all" /></th>
@@ -46,7 +48,7 @@
       @else
         @foreach($comments as $key => $comment)
           <tr>
-            <td><input type="checkbox" /></td>
+            <td><input type="checkbox" value="{{ $comment->_id }}" /></td>
             <td class="auto-break-words"><a href="{{ action('IndexController@viewPost', ['id' => $comment->post->_id]) }}" target="_blank">{{ $comment->post->title }}</a></td>
             <td>{{ $comment->name }}</td>
             <td>{{ $comment->email }}</td>
@@ -61,12 +63,14 @@
             </td>
             <td>
               <div class="btn-group btn-group-xs" role="group" aria-label="Action buttons">
-                <a href="{{ action('Admin\CommentsController@approve', ['id' => $comment->_id]) }}" class="btn btn-success">Approve</a>
+                @if($comment->pending)
+                  <a href="{{ action('Admin\CommentsController@approve', ['id' => $comment->_id]) }}" class="btn btn-success">Approve</a>
+                @endif
                 <a href="javascript:;" class="btn btn-danger delete-record">Delete</a>
               </div>
               {!! @Form::open([
-                'action' => ['Admin\CommentsController@destroy'],
-                'method' => 'delete'
+                'action' => ['Admin\CommentsController@destroy', id => $comment->_id],
+                'method' => 'get'
               ]) !!}
               {!! Form::close() !!}
             </td>
@@ -75,7 +79,7 @@
       @endif
       </tbody>
     </table>
-    {!! $comments->links() !!}
+    {!! $comments->appends(Input::except('page'))->links() !!}
   </div>
 </div>
 @include('admin.common.confirmmodal')
@@ -83,4 +87,14 @@
 
 @section('bottomScripts')
   <script src="{{ url('js/delete-record-confirm.js') }}"></script>
+  <script src="{{ url('js/mass-action-records.js') }}"></script>
+  <script>
+    $('input[type="checkbox"].check-all').click(function() {
+      var allChecked = $(this).get(0).checked;
+
+      $(this).closest('table').find('input[type="checkbox"]').not('.check-all').each(function() {
+        $(this).get(0).checked = allChecked;
+      });
+    });
+  </script>
 @endsection

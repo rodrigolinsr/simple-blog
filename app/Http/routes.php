@@ -36,7 +36,9 @@ Route::group(['middlewareGroups' => ['web']], function () {
 
       // Comments routes
       Route::get('comments', 'CommentsController@index');
-      Route::post('comments/approve', 'CommentsController@approve');
-      Route::delete('comments/delete', 'CommentsController@destroy');
+      Route::get('comments/approve/{id}', 'CommentsController@approve');
+      Route::get('comments/delete/{id}', 'CommentsController@destroy');
+      Route::post('comments/massapprove/', 'CommentsController@massApprove');
+      Route::post('comments/massdelete/', 'CommentsController@massDestroy');
     });
 });
