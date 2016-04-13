@@ -25,6 +25,7 @@
         'post' => $post
       ])
     @endforeach
+    {!! $posts->links() !!}
   @endif
 </div>
 @endsection

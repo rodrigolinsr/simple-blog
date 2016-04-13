@@ -16,7 +16,7 @@ class IndexController extends Controller
 
     $posts = Post::where('draft', '=', false)
                  ->where('published_at', '<=', new \DateTime())
-                 ->orderBy('published_at', 'desc')->get();
+                 ->orderBy('published_at', 'desc')->paginate($this->pageSize);
 
     foreach($posts as $post) {
       $post->truncatedText = Utils::printTruncated(1000, $post->text);
