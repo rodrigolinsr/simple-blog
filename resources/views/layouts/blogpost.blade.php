@@ -104,7 +104,7 @@
       </form>
       <?php
       if(!Auth::guest()) {
-        $comments = $post->comments()->get();
+        $comments = $post->comments()->orderBy('created_at', 'asc')->get();
       } else {
         $comments = $post->comments()->where('pending', false)->get();
       }

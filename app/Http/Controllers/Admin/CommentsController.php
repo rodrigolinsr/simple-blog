@@ -31,10 +31,10 @@ class CommentsController extends Controller {
         $pending = false;
       }
 
-      $comments = PostComment::where('pending', $pending)->paginate($this->pageSize);
+      $comments = PostComment::where('pending', $pending)->orderBy('created_at', 'desc')->paginate($this->pageSize);
     } else {
       // Bring all results to paginate
-      $comments = PostComment::paginate($this->pageSize);
+      $comments = PostComment::orderBy('created_at', 'desc')->paginate($this->pageSize);
     }
 
     $counters = [

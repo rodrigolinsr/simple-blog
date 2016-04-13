@@ -20,7 +20,7 @@ class UsersController extends Controller {
    * @return \Illuminate\Http\Response
    */
   protected function index() {
-    $users = User::paginate($this->pageSize);
+    $users = User::orderBy('name', 'asc')->paginate($this->pageSize);
     return view('admin.users.index')->with('users', $users);
   }
 
