@@ -9,7 +9,7 @@ class Post extends Moloquent {
    *
    * @var array
    */
-  protected $fillable = ['title', 'text', 'draft', 'user_id'];
+  protected $fillable = ['title', 'text', 'draft', 'user_id', 'published_at'];
 
   protected $dates = ['published_at'];
 

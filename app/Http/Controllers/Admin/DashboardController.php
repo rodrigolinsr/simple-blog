@@ -102,7 +102,7 @@ class DashboardController extends Controller
 
     $post->save();
 
-    $urlToPost = url('/admin/posts/edit', ['id' => $post->_id]);
+    $urlToPost = action('Admin\PostsController@edit', ['id' => $post->_id]);
 
     $service->addMessage(MessageService::TYPE_SUCCESS, "Post saved successfully as draft.
     <a href='$urlToPost'>Click here</a> to continue editing the post");

@@ -31,3 +31,23 @@ $factory->define(App\Models\Tag::class, function (Faker\Generator $faker) {
         'name' => $faker->word
     ];
 });
+
+
+$factory->define(App\Models\Post::class, function (Faker\Generator $faker) {
+  return [
+    'title' => $faker->sentence,
+    'text' => nl2br($faker->paragraphs(10, true)),
+    'draft' => $faker->boolean,
+    'published_at' => $faker->dateTimeBetween('-2 month', '-1 week')
+  ];
+});
+
+$factory->define(App\Models\PostComment::class, function (Faker\Generator $faker) {
+  return [
+    'name' => $faker->name,
+    'email' => $faker->safeEmail,
+    'comment' => $faker->text,
+    'pending' => $faker->boolean,
+    'created_at' => $faker->dateTimeBetween('-1 week', 'now')
+  ];
+});
